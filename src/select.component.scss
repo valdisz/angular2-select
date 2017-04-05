@@ -1,0 +1,114 @@
+[unselectable], .unselectable {
+    user-select: none;
+}
+
+[truncate], .truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+sab-select {
+    display: block;
+    position: relative;
+
+    .sab-select__ {
+        &wrapper {
+            border: 1px solid silver;
+            display: flex;
+            background-color: white;
+        }
+
+        &placeholder {
+            position: absolute;
+            padding: 1px;
+        }
+
+        &selected-value-container {
+            flex: 1;
+            display: flex;
+            padding: 1px;
+        }
+
+        &selected-value {
+            @extend .truncate;
+            @extend .unselectable;
+
+            cursor: default;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        &input-container {
+            flex: 1;
+            display: none;
+            padding: 1px;
+        }
+
+        &input {
+            border: none;
+            display: block;
+            width: 100%;
+
+            &:focus {
+                outline: none;
+            }
+        }
+
+        &buttons {
+            margin-left: 1px;
+        }
+
+        &expand-button {
+            border: none;
+            background-color: transparent;
+        }
+
+        &panel {
+            @extend .unselectable;
+
+            position: absolute;
+            margin-top: 3px;
+            min-width: 100%;
+            overflow: auto;
+            z-index: 9999;
+            background-color: white;
+            border: silver 1px solid;
+        }
+
+        &items {
+            position: relative;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        &item {
+            @extend .truncate;
+
+            cursor: default;
+            padding: 4px 8px;
+            max-width: 300px;
+
+            &_active, &:hover {
+                background-color: silver;
+            }
+        }
+    }
+}
+
+.sab-select_active {
+    & .sab-select__panel,
+    & .sab-select__wrapper {
+        border-color: blue;
+    }
+
+    .sab-select__selected-value-container {
+        display: none;
+    }
+
+    .sab-select__input-container {
+        display: flex;
+    }
+}

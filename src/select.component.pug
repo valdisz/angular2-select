@@ -1,0 +1,37 @@
+include ../mixins.pug
+
+.sab-select__wrapper((click)='onFocus()')
+    .sab-select__placeholder(*ngIf='placeholderVisible') {{placeholder}}
+
+    .sab-select__selected-value-container
+        .sab-select__selected-value(*ngIf='selected')
+            template([sabTemplate]='selectedTemplate' [sabTemplateItem]='selected.value')
+
+    .sab-select__input-container
+        input.sab-select__input(
+            #selectInput
+            type='text'
+            [value]='text'
+            (blur)='onBlur()'
+            (keydown)='onKeyDown($event)'
+            (keypress)='onKeyPress($event)'
+            (input)='onFilter(selectInput.value)')
+
+    .sab-select__buttons
+        button.sab-select__expand-button((click)='onClick()' (mousedown)='$event.preventDefault()')
+            +icon('chevron-down')
+
+.sab-select__panel([hidden]='!opened' (mousedown)='$event.preventDefault()')
+    .sab-select__items
+        template(*ngIf='headerTemplate' [sabTemplate]='headerTemplate' [sabTemplateContext]='state')
+        .sab-select__item(
+            *ngFor='let item of items'
+            [ngClass]='{ "sab-select__item_active": item === active }'
+            (click)='onSelect(item); $event.preventDefault(); $event.stopPropagation()')
+            template(*ngIf='!item.placeholder' [sabTemplate]='itemTemplate' [sabTemplateItem]='item.value' [sabTemplateContext]='state')
+            template(*ngIf='item.placeholder' [sabTemplate]='placeholderTemplate' [sabTemplateItem]='item.value' [sabTemplateContext]='state')
+        template(*ngIf='items.length === 0 && emptyTemplate' [sabTemplate]='emptyTemplate' [sabTemplateContext]='state')
+        template(*ngIf='footerTemplate' [sabTemplate]='footerTemplate' [sabTemplateContext]='state')
+
+template(#defaultTemplate let-item)
+    span([title]='state.textGetter(item)') {{ state.textGetter(item) }}
