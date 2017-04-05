@@ -1,0 +1,90 @@
+-
+    function eventHandler(name) {
+        return 'on_' + name + '($event)';
+    }
+
+mixin field-container(name)
+    if name
+        div([ngClass]='{"form-group": true, "row": true, "has-danger": !isValid("' + name +'") }')
+            block
+    else
+        .form-group.row
+            block
+
+mixin field(label, name, required=true)
+    +field-container(name)
+        label.col-sm-4.col-form-label
+            if required
+                strong= label
+            else
+                = label
+        .col-sm-8
+            block
+
+mixin icon(name)
+    i(class=['fa', 'fa-' + name])&attributes(attributes)
+
+mixin help()
+    small.form-text.text-muted(hidden)
+        +icon('question-circle-o')
+        | &nbsp;
+        block
+
+mixin error(name, error)
+    .form-control-feedback(*ngIf='isError("' + name + '", "' + error + '")')
+        small
+            +icon('exclamation')
+            | &nbsp;
+            block
+
+mixin radio(name, value, required=true)
+    .form-check
+        label.form-check-label
+            input.form-check-input(
+                type='radio'
+                name=name
+                value=value
+                [ngModel]=name
+                (ngModelChange)=eventHandler(name)
+                required=required)
+            | &nbsp;
+            block
+
+mixin check(name, value, required=true)
+    .form-check
+        label.form-check-label
+            input.form-check-input(
+                type='checkbox'
+                name=name
+                value=value
+                [ngModel]=name
+                (ngModelChange)=eventHandler(name)
+                required=required)
+            | &nbsp;
+            block
+
+mixin text(name, required=true)
+    input.form-control(
+        type='text'
+        name=name
+        [ngModel]=name
+        (ngModelChange)=eventHandler(name)
+        required=required)
+
+mixin date(name, required=true)
+    input.form-control(
+        type='date'
+        name=name
+        [ngModel]=name
+        (ngModelChange)=eventHandler(name)
+        required=required
+    )
+
+mixin select(name, required=true)
+    select.form-control(
+        name=name
+        [ngModel]=name
+        (ngModelChange)=eventHandler(name)
+        required=required
+    )
+        block
